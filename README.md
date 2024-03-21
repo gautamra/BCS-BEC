@@ -48,3 +48,5 @@ The `iterate` method of the `TBmodel` object will solve the BdG self-consistency
 ### Example
 
 A classic straighforward case would be when each segment is at half filling. Half filling is enforces in the normal segment by setting `U0N=0`. In the superconductor however, we need to subtract the Hartree contribution of the Hubbard term, therefore `U0S=-V/2`.
+
+!(BCS-N-BCS.pdf)
