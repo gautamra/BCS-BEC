@@ -141,7 +141,8 @@ class TBmodel:
         oldDeltaF = np.array([np.abs(self.Delta.mean()), 0])
         H = self.fsyst.hamiltonian_submatrix(params = dict(Delta = self.Delta, Pot = self.Pot))
         H_ini= H
-        while np.array([(abs(Del)>10**(-5)) and ((abs(err)/abs(Del))>0.001) and cc < 200 for err,Del in zip(err_Delta, self.Delta)] ).any():
+        max_steps = 400
+        while np.array([(abs(Del)>10**(-5)) and ((abs(err)/abs(Del))>0.001) and cc < max_steps for err,Del in zip(err_Delta, self.Delta)] ).any():
             
             H = self.fsyst.hamiltonian_submatrix(params = dict(Delta = self.Delta, Pot = self.Pot))
             newDelta, newPot = self_cons(H , cc) 
@@ -156,7 +157,7 @@ class TBmodel:
             cc += 1    
             self.Delta, self.Pot = newDelta, newPot
        
-        if cc<200:
+        if cc<max_steps:
             print("Convergence took {} iterations".format(cc))  
         else:
             print("Convergence not reached")
