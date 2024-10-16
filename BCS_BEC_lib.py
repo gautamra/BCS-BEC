@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Oct  1 14:25:27 2020
+Created on Mon Apr 15 14:35:10 2024
 
-@author: gautam
+@author: arman
 """
 
 import numpy as np
@@ -141,7 +141,7 @@ class TBmodel:
         oldDeltaF = np.array([np.abs(self.Delta.mean()), 0])
         H = self.fsyst.hamiltonian_submatrix(params = dict(Delta = self.Delta, Pot = self.Pot))
         H_ini= H
-        max_steps = 400
+        max_steps = 700
         while np.array([(abs(Del)>10**(-5)) and ((abs(err)/abs(Del))>0.001) and cc < max_steps for err,Del in zip(err_Delta, self.Delta)] ).any():
             
             H = self.fsyst.hamiltonian_submatrix(params = dict(Delta = self.Delta, Pot = self.Pot))
@@ -151,8 +151,8 @@ class TBmodel:
             err_Delta = np.abs(newDelta - self.Delta)
            
             free_energy = self.get_free_energy()
-            #DeltaF = np.array([abs(self.Delta.mean()), free_energy])
-            #self.testDeltaF.append(DeltaF)
+            DeltaF = np.array([abs(self.Delta.mean()), free_energy])
+            self.testDeltaF.append(DeltaF)
            
             cc += 1    
             self.Delta, self.Pot = newDelta, newPot
@@ -163,7 +163,6 @@ class TBmodel:
             print("Convergence not reached")
             
         self.Delta, self.Pot = self_cons(H , cc)
-        
         self.H = H
         
         return self.Delta, self.Pot, self.evals, self.uvecs, self.vvecs, self.H, self.occupancy
