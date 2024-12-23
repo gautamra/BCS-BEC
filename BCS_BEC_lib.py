@@ -113,7 +113,7 @@ class TBmodel:
             
             occupancy = np.zeros(self.LL)
             for ee, uvec, vvec in zip(evals, uvecs.T, vvecs.T):
-                    occupancy += (Fermi(ee, beta = self.beta)*np.abs(uvec)**2 + (1-Fermi(ee, beta = self.beta))*np.abs(vvec)**2).reshape(self.LL)     
+                occupancy += (Fermi(ee, beta = self.beta)*np.abs(uvec)**2 + (1-Fermi(ee, beta = self.beta))*np.abs(vvec)**2).reshape(self.LL)     
             self.occupancy = occupancy
             
             Pot = self.vs*occupancy
@@ -143,7 +143,6 @@ class TBmodel:
         H_ini= H
         max_steps = 700
         while np.array([(abs(Del)>10**(-5)) and ((abs(err)/abs(Del))>0.001) and cc < max_steps for err,Del in zip(err_Delta, self.Delta)] ).any():
-            
             H = self.fsyst.hamiltonian_submatrix(params = dict(Delta = self.Delta, Pot = self.Pot))
             newDelta, newPot = self_cons(H , cc) 
             newDelta = newDelta*3/4 + self.Delta*1/4
